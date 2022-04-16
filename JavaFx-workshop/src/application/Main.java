@@ -1,7 +1,7 @@
 package application;
 
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class Main extends javafx.application.Application {
@@ -13,9 +13,11 @@ public class Main extends javafx.application.Application {
     @Override
     public void start(Stage stage) {
         try {
-            BorderPane root = new BorderPane();
-            Scene scene = new Scene(root, 600, 400);
-            stage.setScene(scene);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));
+
+            Scene mainScene = new Scene(fxmlLoader.load());
+            stage.setScene(mainScene);
+            stage.setTitle("JavaFx Application");
             stage.show();
         } catch (Exception e) {
             throw new RuntimeException(e);
