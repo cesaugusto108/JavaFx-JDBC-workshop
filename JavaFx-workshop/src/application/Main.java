@@ -2,6 +2,7 @@ package application;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 
 public class Main extends javafx.application.Application {
@@ -15,7 +16,11 @@ public class Main extends javafx.application.Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));
 
-            Scene mainScene = new Scene(fxmlLoader.load());
+            ScrollPane scrollPane = fxmlLoader.load();
+            scrollPane.setFitToHeight(true);
+            scrollPane.setFitToWidth(true);
+
+            Scene mainScene = new Scene(scrollPane);
             stage.setScene(mainScene);
             stage.setTitle("JavaFx Application");
             stage.show();
