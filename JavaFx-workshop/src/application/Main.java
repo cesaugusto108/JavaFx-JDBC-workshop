@@ -7,6 +7,12 @@ import javafx.stage.Stage;
 
 public class Main extends javafx.application.Application {
 
+    private static Scene mainScene;
+
+    public static Scene getMainScene() {
+        return mainScene;
+    }
+
     public static void main(String[] args) {
         launch();
     }
@@ -20,7 +26,7 @@ public class Main extends javafx.application.Application {
             scrollPane.setFitToHeight(true);
             scrollPane.setFitToWidth(true);
 
-            Scene mainScene = new Scene(scrollPane);
+            mainScene = new Scene(scrollPane);
             stage.setScene(mainScene);
             stage.setTitle("JavaFx Application");
             stage.show();
