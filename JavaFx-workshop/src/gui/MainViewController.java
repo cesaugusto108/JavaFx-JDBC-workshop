@@ -34,16 +34,16 @@ public class MainViewController implements Initializable {
 
     @FXML
     public void onDepartmentMenuItemAction() {
-
+        loadView("/gui/DepartmentList.fxml");
     }
 
     @FXML
     public void onAboutMenuItemAction() {
-        loadAboutView("/gui/About.fxml");
+        loadView("/gui/About.fxml");
     }
 
     @FXML
-    public  synchronized void loadAboutView(String path) {
+    public  synchronized void loadView(String path) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(path));
         try {
             VBox vBox = fxmlLoader.load();
