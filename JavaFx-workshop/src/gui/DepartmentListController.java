@@ -30,6 +30,10 @@ public class DepartmentListController implements Initializable {
 
     private DepartmentService departmentService;
 
+    public void setDepartmentService(DepartmentService departmentService) {
+        this.departmentService = departmentService;
+    }
+
     @FXML
     private Button buttonNew;
 
@@ -44,14 +48,11 @@ public class DepartmentListController implements Initializable {
 
     private ObservableList<Department> observableList;
 
-    public void setDepartmentService(DepartmentService departmentService) {
-        this.departmentService = departmentService;
-    }
-
     @FXML
     public void onButtonNewAction(ActionEvent actionEvent) {
         Stage parentStage = Utils.currentStage(actionEvent);
-        createDialogForm("/gui/DepartmentForm.fxml", parentStage);
+        Department department = new Department();
+        createDialogForm(department, "/gui/DepartmentForm.fxml", parentStage);
     }
 
     public void updateTableView() {
@@ -62,10 +63,14 @@ public class DepartmentListController implements Initializable {
         departmentTableView.setItems(observableList);
     }
 
-    private void createDialogForm(String path, Stage parentStage) {
+    private void createDialogForm(Department department, String path, Stage parentStage) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(path));
             Pane pane = fxmlLoader.load();
+
+            DepartmentFormController departmentFormController = fxmlLoader.getController();
+            departmentFormController.setDepartment(department);
+            departmentFormController.updateFormData();
 
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Enter department data");
