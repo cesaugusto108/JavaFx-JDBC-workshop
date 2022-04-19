@@ -1,6 +1,7 @@
 package gui;
 
 import db.DBException;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
@@ -16,6 +17,8 @@ import model.services.DepartmentService;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DepartmentFormController implements Initializable {
@@ -23,6 +26,8 @@ public class DepartmentFormController implements Initializable {
     private Department department;
 
     private DepartmentService departmentService;
+
+    private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
     public void setDepartment(Department department) {
         this.department = department;
@@ -60,8 +65,15 @@ public class DepartmentFormController implements Initializable {
             department = getFormData();
             departmentService.saveOrUpdate(department);
             Utils.currentStage(event).close();
+            notifyDataChangeListeners();
         } catch (DBException e) {
             Alerts.showAlert("Error saving data", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    private void notifyDataChangeListeners() {
+        for (DataChangeListener dataChangeListener : dataChangeListeners) {
+            dataChangeListener.onDataChanged();
         }
     }
 
@@ -83,6 +95,10 @@ public class DepartmentFormController implements Initializable {
 
         idTextField.setText(String.valueOf(department.getId()));
         nameTextField.setText(department.getName());
+    }
+
+    public void subscribeDataChangeListener(DataChangeListener dataChangeListener) {
+        dataChangeListeners.add(dataChangeListener);
     }
 
     private void initializeNodes() {
