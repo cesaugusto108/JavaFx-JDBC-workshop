@@ -32,6 +32,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
     private DepartmentService departmentService;
 
     public void setDepartmentService(DepartmentService departmentService) {
+
         this.departmentService = departmentService;
     }
 
@@ -51,12 +52,14 @@ public class DepartmentListController implements Initializable, DataChangeListen
 
     @FXML
     public void onButtonNewAction(ActionEvent actionEvent) {
+
         Stage parentStage = Utils.currentStage(actionEvent);
         Department department = new Department();
         createDialogForm(department, "/gui/DepartmentForm.fxml", parentStage);
     }
 
     public void updateTableView() {
+
         if (departmentService == null) throw new IllegalStateException("Service is null");
 
         List<Department> list = departmentService.findAll();
@@ -65,7 +68,9 @@ public class DepartmentListController implements Initializable, DataChangeListen
     }
 
     private void createDialogForm(Department department, String path, Stage parentStage) {
+
         try {
+
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(path));
             Pane pane = fxmlLoader.load();
 
@@ -83,11 +88,13 @@ public class DepartmentListController implements Initializable, DataChangeListen
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.showAndWait();
         } catch (IOException e) {
+
             Alerts.showAlert("IO Exception", "Error loading view.", e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
     private void initializeNodes() {
+
         departmentIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("Id"));
         departmentNameTableColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
 
@@ -97,11 +104,13 @@ public class DepartmentListController implements Initializable, DataChangeListen
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         initializeNodes();
     }
 
     @Override
     public void onDataChanged() {
+
         updateTableView();
     }
 }

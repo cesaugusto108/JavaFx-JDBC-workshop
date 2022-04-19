@@ -13,13 +13,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.entities.Department;
+import model.exceptions.ValidationException;
 import model.services.DepartmentService;
 
 import java.net.URL;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class DepartmentFormController implements Initializable {
 
@@ -30,10 +28,12 @@ public class DepartmentFormController implements Initializable {
     private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
     public void setDepartment(Department department) {
+
         this.department = department;
     }
 
     public void setDepartmentService(DepartmentService departmentService) {
+
         this.departmentService = departmentService;
     }
 
@@ -54,43 +54,68 @@ public class DepartmentFormController implements Initializable {
 
     @FXML
     public void onSaveButtonAction(ActionEvent event) {
+
         if (department == null) {
+
             throw new IllegalStateException("Department is null.");
         }
 
         if (departmentService == null) {
+
             throw new IllegalStateException("DeparmentService is null.");
         }
         try {
+
             department = getFormData();
             departmentService.saveOrUpdate(department);
             Utils.currentStage(event).close();
             notifyDataChangeListeners();
         } catch (DBException e) {
+
             Alerts.showAlert("Error saving data", null, e.getMessage(), Alert.AlertType.ERROR);
+        } catch (ValidationException e) {
+
+            setErrorMessages(e.getErrors());
         }
     }
 
     private void notifyDataChangeListeners() {
+
         for (DataChangeListener dataChangeListener : dataChangeListeners) {
             dataChangeListener.onDataChanged();
         }
     }
 
     public Department getFormData() {
+
         Department dep = new Department();
+        ValidationException validationException = new ValidationException("Validation error");
+
         dep.setId(Utils.stringParseInt(idTextField.getText()));
+
+        if (nameTextField.getText() == null || nameTextField.getText().trim().equals("")) {
+
+            validationException.addError("Name", "Field must not be empty.");
+        }
+
         dep.setName(nameTextField.getText());
+
+        if (validationException.getErrors().size() > 0) {
+
+            throw validationException;
+        }
 
         return dep;
     }
 
     @FXML
     public void onCancelButtonAction(ActionEvent event) {
+
         Utils.currentStage(event).close();
     }
 
     public void updateFormData() {
+
         if (department == null) throw new IllegalStateException("Department is null.");
 
         idTextField.setText(String.valueOf(department.getId()));
@@ -98,16 +123,29 @@ public class DepartmentFormController implements Initializable {
     }
 
     public void subscribeDataChangeListener(DataChangeListener dataChangeListener) {
+
         dataChangeListeners.add(dataChangeListener);
     }
 
+    private void setErrorMessages(Map<String, String> errors) {
+
+        Set<String> fields = errors.keySet();
+
+        if (fields.contains("Name")) {
+
+            errorLabel.setText(errors.get("Name"));
+        }
+    }
+
     private void initializeNodes() {
+
         Constraints.setTextFieldInteger(idTextField);
         Constraints.setTextFieldMaxLength(nameTextField, 30);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         initializeNodes();
     }
 }
