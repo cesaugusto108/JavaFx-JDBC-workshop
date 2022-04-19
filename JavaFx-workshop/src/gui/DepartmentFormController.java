@@ -1,22 +1,35 @@
 package gui;
 
+import db.DBException;
+import gui.util.Alerts;
 import gui.util.Constraints;
+import gui.util.Utils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.entities.Department;
+import model.services.DepartmentService;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class DepartmentFormController implements Initializable {
 
     private Department department;
 
+    private DepartmentService departmentService;
+
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public void setDepartmentService(DepartmentService departmentService) {
+        this.departmentService = departmentService;
     }
 
     @FXML
@@ -35,13 +48,34 @@ public class DepartmentFormController implements Initializable {
     private Button cancelButton;
 
     @FXML
-    public void onSaveButtonAction() {
-        System.out.println("Good");
+    public void onSaveButtonAction(ActionEvent event) {
+        if (department == null) {
+            throw new IllegalStateException("Department is null.");
+        }
+
+        if (departmentService == null) {
+            throw new IllegalStateException("DeparmentService is null.");
+        }
+        try {
+            department = getFormData();
+            departmentService.saveOrUpdate(department);
+            Utils.currentStage(event).close();
+        } catch (DBException e) {
+            Alerts.showAlert("Error saving data", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    public Department getFormData() {
+        Department dep = new Department();
+        dep.setId(Utils.stringParseInt(idTextField.getText()));
+        dep.setName(nameTextField.getText());
+
+        return dep;
     }
 
     @FXML
-    public void onCancelButtonAction() {
-        System.out.println("Good");
+    public void onCancelButtonAction(ActionEvent event) {
+        Utils.currentStage(event).close();
     }
 
     public void updateFormData() {
