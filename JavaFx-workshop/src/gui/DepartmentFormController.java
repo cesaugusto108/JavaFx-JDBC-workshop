@@ -25,7 +25,7 @@ public class DepartmentFormController implements Initializable {
 
     private DepartmentService departmentService;
 
-    private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
+    private final List<DataChangeListener> DATA_CHANGE_LISTENERS = new ArrayList<>();
 
     public void setDepartment(Department department) {
 
@@ -53,7 +53,7 @@ public class DepartmentFormController implements Initializable {
     private Button cancelButton;
 
     @FXML
-    public void onSaveButtonAction(ActionEvent event) {
+    public void setSaveButtonAction(ActionEvent event) {
 
         if (department == null) {
 
@@ -62,7 +62,7 @@ public class DepartmentFormController implements Initializable {
 
         if (departmentService == null) {
 
-            throw new IllegalStateException("DeparmentService is null.");
+            throw new IllegalStateException("DepartmentService is null.");
         }
         try {
 
@@ -81,8 +81,9 @@ public class DepartmentFormController implements Initializable {
 
     private void notifyDataChangeListeners() {
 
-        for (DataChangeListener dataChangeListener : dataChangeListeners) {
-            dataChangeListener.onDataChanged();
+        for (DataChangeListener dataChangeListener : DATA_CHANGE_LISTENERS) {
+
+            dataChangeListener.updateDataChanged();
         }
     }
 
@@ -109,7 +110,7 @@ public class DepartmentFormController implements Initializable {
     }
 
     @FXML
-    public void onCancelButtonAction(ActionEvent event) {
+    public void setCancelButtonAction(ActionEvent event) {
 
         Utils.currentStage(event).close();
     }
@@ -124,7 +125,7 @@ public class DepartmentFormController implements Initializable {
 
     public void subscribeDataChangeListener(DataChangeListener dataChangeListener) {
 
-        dataChangeListeners.add(dataChangeListener);
+        DATA_CHANGE_LISTENERS.add(dataChangeListener);
     }
 
     private void setErrorMessages(Map<String, String> errors) {

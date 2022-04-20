@@ -52,7 +52,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
     private ObservableList<Department> observableList;
 
     @FXML
-    public void onButtonNewAction(ActionEvent actionEvent) {
+    public void setButtonNewAction(ActionEvent actionEvent) {
 
         Stage parentStage = Utils.currentStage(actionEvent);
         Department department = new Department();
@@ -96,7 +96,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
     }
 
     @Override
-    public void onDataChanged() {
+    public void updateDataChanged() {
 
         updateTableView();
     }

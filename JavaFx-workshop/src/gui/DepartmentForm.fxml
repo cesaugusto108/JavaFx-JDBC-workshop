@@ -39,8 +39,8 @@
             </Label>
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveButtonAction" text="Save" />
-                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelButtonAction" text="Cancel" />
+                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#setSaveButtonAction" text="Save" />
+                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#setCancelButtonAction" text="Cancel" />
                </children>
                <padding>
                   <Insets top="5.0" />
