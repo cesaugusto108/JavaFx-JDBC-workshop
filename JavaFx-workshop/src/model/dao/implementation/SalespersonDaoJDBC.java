@@ -22,6 +22,7 @@ public class SalespersonDaoJDBC implements SalespersonDao {
 
     @Override
     public void insert(Salesperson salesperson) {
+
         try (PreparedStatement preparedStatement = CONNECTION
                 .prepareStatement("INSERT INTO salesperson " +
                                 "(Name, Email, BirthDate, BaseSalary, DepartmentId) " +
@@ -60,6 +61,7 @@ public class SalespersonDaoJDBC implements SalespersonDao {
 
     @Override
     public void update(Salesperson salesperson) {
+
         try (PreparedStatement preparedStatement = CONNECTION
                 .prepareStatement("""
                                 UPDATE salesperson
@@ -83,6 +85,7 @@ public class SalespersonDaoJDBC implements SalespersonDao {
 
     @Override
     public void deleteById(Integer id) {
+
         try (PreparedStatement preparedStatement = CONNECTION
                 .prepareStatement("""
                         DELETE FROM salesperson
