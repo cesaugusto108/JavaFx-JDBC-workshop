@@ -1,6 +1,8 @@
 package gui;
 
 import application.Main;
+import db.DBException;
+import db.DBIntegrityException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
@@ -23,6 +25,7 @@ import model.services.DepartmentService;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DepartmentListController implements Initializable, DataChangeListener {
@@ -49,6 +52,9 @@ public class DepartmentListController implements Initializable, DataChangeListen
     @FXML
     private TableColumn<Department, Department> tableColumnEdit;
 
+    @FXML
+    private TableColumn<Department, Department> tableColumnRemove;
+
     private ObservableList<Department> observableList;
 
     @FXML
@@ -67,6 +73,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
         observableList = FXCollections.observableArrayList(list);
         departmentTableView.setItems(observableList);
         initEditButtons();
+        initRemoveButtons();
     }
 
     private void createDialogForm(Department department, String path, Stage parentStage) {
@@ -95,6 +102,28 @@ public class DepartmentListController implements Initializable, DataChangeListen
         }
     }
 
+    private void removeEntity(Department department) {
+
+        Optional<ButtonType> result = Alerts.showConfirmation("Confirmation", "Do you really wish to delete this item?");
+
+        if (result.get() == ButtonType.OK) {
+
+            if (departmentService == null) {
+
+                throw new IllegalStateException("Department Service is null.");
+            }
+
+            try {
+
+                departmentService.remove(department);
+                updateTableView();
+            } catch (Exception e) {
+
+                Alerts.showAlert("Error removing object", null, e.getMessage(), Alert.AlertType.ERROR);
+            }
+        }
+    }
+
     @Override
     public void updateDataChanged() {
 
@@ -116,11 +145,36 @@ public class DepartmentListController implements Initializable, DataChangeListen
                 if (department == null) {
 
                     setGraphic(null);
+
                     return;
                 }
 
                 setGraphic(BUTTON);
                 BUTTON.setOnAction(event -> createDialogForm(department, "/gui/DepartmentForm.fxml", Utils.currentStage(event)));
+            }
+        });
+    }
+
+    private void initRemoveButtons() {
+
+        tableColumnRemove.setCellValueFactory(x -> new ReadOnlyObjectWrapper<>(x.getValue()));
+        tableColumnRemove.setCellFactory(x -> new TableCell<Department, Department>() {
+            private final Button BUTTON = new Button("Remove");
+
+            @Override
+            protected void updateItem(Department department, boolean empty) {
+
+                super.updateItem(department, empty);
+
+                if (department == null) {
+
+                    setGraphic(null);
+
+                    return;
+                }
+
+                setGraphic(BUTTON);
+                BUTTON.setOnAction(event -> removeEntity(department));
             }
         });
     }

@@ -1,6 +1,7 @@
 package model.dao.implementation;
 
 import db.DBException;
+import db.DBIntegrityException;
 import model.dao.DepartmentDao;
 import model.entities.Department;
 
@@ -68,8 +69,10 @@ public class DepartmentDaoJDBC implements DepartmentDao {
                 WHERE Id = ?""")) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
+        } catch (DBException e) {
             e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
