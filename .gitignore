@@ -31,4 +31,6 @@ build/
 dist/
 nbdist/
 out/
+
+#Intellij Idea
 .idea/
