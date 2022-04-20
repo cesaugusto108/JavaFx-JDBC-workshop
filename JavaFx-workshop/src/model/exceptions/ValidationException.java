@@ -9,17 +9,20 @@ public class ValidationException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = -3252172256517071140L;
 
-    private Map<String, String> errors = new HashMap<>();
+    private final Map<String, String> ERRORS = new HashMap<>();
 
-    public Map<String, String> getErrors() {
-        return errors;
+    public Map<String, String> getERRORS() {
+
+        return ERRORS;
     }
 
     public ValidationException(String message) {
+
         super(message);
     }
 
     public void addError(String fieldName, String messageError) {
-        errors.put(fieldName, messageError);
+
+        ERRORS.put(fieldName, messageError);
     }
 }

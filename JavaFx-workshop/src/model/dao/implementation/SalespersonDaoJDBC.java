@@ -16,6 +16,7 @@ public class SalespersonDaoJDBC implements SalespersonDao {
     private final Connection CONNECTION;
 
     public SalespersonDaoJDBC(Connection CONNECTION) {
+
         this.CONNECTION = CONNECTION;
     }
 
@@ -36,18 +37,23 @@ public class SalespersonDaoJDBC implements SalespersonDao {
             int rowsInserted = preparedStatement.executeUpdate();
 
             if (rowsInserted > 0) {
+
                 ResultSet resultSet = preparedStatement.getGeneratedKeys();
+
                 if (resultSet.next()) {
+
                     int id = resultSet.getInt(1);
                     salesperson.setId(id);
                 }
 
                 resultSet.close();
             } else {
+
                 throw new DBException("Unexpected error: no rows inserted.");
             }
 
         } catch (SQLException e) {
+
             throw new DBException(e.getMessage());
         }
     }
@@ -70,6 +76,7 @@ public class SalespersonDaoJDBC implements SalespersonDao {
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
+
             e.printStackTrace();
         }
     }
@@ -80,16 +87,20 @@ public class SalespersonDaoJDBC implements SalespersonDao {
                 .prepareStatement("""
                         DELETE FROM salesperson
                         WHERE Id = ?""")) {
+
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
+
             throw new DBException(e.getMessage());
         }
     }
 
     @Override
     public Salesperson findById(Integer id) {
+
         ResultSet resultSet = null;
+
         try (PreparedStatement preparedStatement = CONNECTION
                 .prepareStatement("""
                         SELECT salesperson.*, department.Name as DepName
@@ -102,17 +113,23 @@ public class SalespersonDaoJDBC implements SalespersonDao {
 
 
             if (resultSet.next()) {
+
                 Department department = instantiateDepartment(resultSet);
 
                 return instantiateSalesperson(resultSet, department);
             }
         } catch (SQLException e) {
+
             throw new DBException(e.getMessage());
         } finally {
+
             if (resultSet != null) {
+
                 try {
+
                     resultSet.close();
                 } catch (SQLException e) {
+
                     e.printStackTrace();
                 }
             }
@@ -123,7 +140,9 @@ public class SalespersonDaoJDBC implements SalespersonDao {
 
     @Override
     public List<Salesperson> findByDepartment(Department department) {
+
         ResultSet resultSet = null;
+
         try (PreparedStatement preparedStatement = CONNECTION
                 .prepareStatement("""
                         SELECT salesperson.*, department.name as DepName
@@ -139,8 +158,10 @@ public class SalespersonDaoJDBC implements SalespersonDao {
             Map<Integer, Department> departmentMap = new HashMap<>();
 
             while (resultSet.next()) {
+
                 Department dep = departmentMap.get(resultSet.getInt("DepartmentId"));
                 if (dep == null) {
+
                     dep = instantiateDepartment(resultSet);
                     departmentMap.put(resultSet.getInt("DepartmentId"), dep);
                 }
@@ -151,12 +172,17 @@ public class SalespersonDaoJDBC implements SalespersonDao {
             return salespersonList;
 
         } catch (SQLException e) {
+
             throw new DBException(e.getMessage());
         } finally {
+
             if (resultSet != null) {
+
                 try {
+
                     resultSet.close();
                 } catch (SQLException e) {
+
                     e.printStackTrace();
                 }
             }
@@ -164,6 +190,7 @@ public class SalespersonDaoJDBC implements SalespersonDao {
     }
 
     private Salesperson instantiateSalesperson(ResultSet resultSet, Department department) throws SQLException {
+
         Salesperson salesperson = new Salesperson();
         salesperson.setId(resultSet.getInt("Id"));
         salesperson.setName(resultSet.getString("Name"));
@@ -176,6 +203,7 @@ public class SalespersonDaoJDBC implements SalespersonDao {
     }
 
     private Department instantiateDepartment(ResultSet resultSet) throws SQLException {
+
         Department department = new Department();
         department.setId(resultSet.getInt("DepartmentId"));
         department.setName(resultSet.getString("DepName"));
@@ -185,7 +213,9 @@ public class SalespersonDaoJDBC implements SalespersonDao {
 
     @Override
     public List<Salesperson> findAll() {
+
         ResultSet resultSet = null;
+
         try (PreparedStatement preparedStatement = CONNECTION
                 .prepareStatement("""
                         SELECT salesperson.*, department.name as DepName
@@ -199,8 +229,11 @@ public class SalespersonDaoJDBC implements SalespersonDao {
             Map<Integer, Department> departmentMap = new HashMap<>();
 
             while (resultSet.next()) {
+
                 Department dep = departmentMap.get(resultSet.getInt("DepartmentId"));
+
                 if (dep == null) {
+
                     dep = instantiateDepartment(resultSet);
                     departmentMap.put(resultSet.getInt("DepartmentId"), dep);
                 }
@@ -211,12 +244,17 @@ public class SalespersonDaoJDBC implements SalespersonDao {
             return salespersonList;
 
         } catch (SQLException e) {
+
             throw new DBException(e.getMessage());
         } finally {
+
             if (resultSet != null) {
+
                 try {
+
                     resultSet.close();
                 } catch (SQLException e) {
+
                     e.printStackTrace();
                 }
             }

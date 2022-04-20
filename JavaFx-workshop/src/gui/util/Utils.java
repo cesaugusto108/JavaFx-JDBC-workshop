@@ -7,13 +7,16 @@ import javafx.stage.Stage;
 public class Utils {
 
     public static Stage currentStage(ActionEvent actionEvent) {
+
         return (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
     }
 
     public static Integer stringParseInt(String string) {
         try {
+
             return Integer.parseInt(string);
         } catch (NumberFormatException e) {
+
             return null;
         }
     }

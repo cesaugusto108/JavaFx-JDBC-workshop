@@ -75,7 +75,7 @@ public class DepartmentFormController implements Initializable {
             Alerts.showAlert("Error saving data", null, e.getMessage(), Alert.AlertType.ERROR);
         } catch (ValidationException e) {
 
-            setErrorMessages(e.getErrors());
+            setErrorMessages(e.getERRORS());
         }
     }
 
@@ -101,7 +101,7 @@ public class DepartmentFormController implements Initializable {
 
         dep.setName(nameTextField.getText());
 
-        if (validationException.getErrors().size() > 0) {
+        if (validationException.getERRORS().size() > 0) {
 
             throw validationException;
         }
