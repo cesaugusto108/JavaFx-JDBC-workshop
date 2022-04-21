@@ -163,6 +163,7 @@ public class SalespersonDaoJDBC implements SalespersonDao {
             while (resultSet.next()) {
 
                 Department dep = departmentMap.get(resultSet.getInt("DepartmentId"));
+
                 if (dep == null) {
 
                     dep = instantiateDepartment(resultSet);
@@ -172,8 +173,8 @@ public class SalespersonDaoJDBC implements SalespersonDao {
                 Salesperson salesperson = instantiateSalesperson(resultSet, dep);
                 salespersonList.add(salesperson);
             }
-            return salespersonList;
 
+            return salespersonList;
         } catch (SQLException e) {
 
             throw new DBException(e.getMessage());
@@ -244,8 +245,8 @@ public class SalespersonDaoJDBC implements SalespersonDao {
                 Salesperson salesperson = instantiateSalesperson(resultSet, dep);
                 salespersonList.add(salesperson);
             }
-            return salespersonList;
 
+            return salespersonList;
         } catch (SQLException e) {
 
             throw new DBException(e.getMessage());
@@ -263,5 +264,4 @@ public class SalespersonDaoJDBC implements SalespersonDao {
             }
         }
     }
-
 }

@@ -10,16 +10,20 @@ public class Main extends javafx.application.Application {
     private static Scene mainScene;
 
     public static Scene getMainScene() {
+
         return mainScene;
     }
 
     public static void main(String[] args) {
+
         launch();
     }
 
     @Override
     public void start(Stage stage) {
+
         try {
+
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));
 
             ScrollPane scrollPane = fxmlLoader.load();
@@ -31,6 +35,7 @@ public class Main extends javafx.application.Application {
             stage.setTitle("JavaFx Application");
             stage.show();
         } catch (Exception e) {
+
             throw new RuntimeException(e);
         }
     }
