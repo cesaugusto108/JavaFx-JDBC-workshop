@@ -22,6 +22,7 @@ import model.services.SalespersonService;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -46,6 +47,15 @@ public class SalespersonListController implements Initializable, DataChangeListe
 
     @FXML
     private TableColumn<Salesperson, String> salespersonNameTableColumn;
+
+    @FXML
+    private TableColumn<Salesperson, String> salespersonEmailTableColumn;
+
+    @FXML
+    private TableColumn<Salesperson, Date> salespersonBirthDateTableColumn;
+
+    @FXML
+    private TableColumn<Salesperson, Double> salespersonBaseSalaryTableColumn;
 
     @FXML
     private TableColumn<Salesperson, Salesperson> tableColumnEdit;
@@ -179,8 +189,15 @@ public class SalespersonListController implements Initializable, DataChangeListe
 
     private void initializeNodes() {
 
-        salespersonIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("Id"));
-        salespersonNameTableColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        salespersonIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        salespersonNameTableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        salespersonEmailTableColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+
+        salespersonBirthDateTableColumn.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
+        Utils.formatTableColumnDate(salespersonBirthDateTableColumn, "MM/dd/yyyy");
+
+        salespersonBaseSalaryTableColumn.setCellValueFactory(new PropertyValueFactory<>("baseSalary"));
+        Utils.formatTableColumnDouble(salespersonBaseSalaryTableColumn, 2);
 
         Stage stage = (Stage) Main.getMainScene().getWindow();
         salespersonTableView.prefHeightProperty().bind(stage.heightProperty());
