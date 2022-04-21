@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+      prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gui.SalespersonListController">
+    <children>
+        <Label text="Salesperson Registration">
+            <padding>
+                <Insets left="5.0" top="5.0"/>
+            </padding>
+            <font>
+                <Font name="Sarala Bold" size="14.0"/>
+            </font>
+        </Label>
+        <ToolBar prefHeight="40.0" prefWidth="200.0">
+            <items>
+                <Button fx:id="buttonNew" mnemonicParsing="false" onAction="#setButtonNewAction" text="New"/>
+            </items>
+        </ToolBar>
+        <TableView fx:id="salespersonTableView" prefHeight="200.0" prefWidth="200.0">
+            <columns>
+                <TableColumn fx:id="salespersonIdTableColumn" prefWidth="75.0" text="Id"/>
+                <TableColumn fx:id="salespersonNameTableColumn" prefWidth="120.0" text="Name"/>
+                <TableColumn fx:id="tableColumnEdit" prefWidth="50.0"/>
+                <TableColumn fx:id="tableColumnRemove" prefWidth="78.0"/>
+            </columns>
+        </TableView>
+    </children>
+</VBox>
