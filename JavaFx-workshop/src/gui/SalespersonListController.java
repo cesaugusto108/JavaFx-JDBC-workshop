@@ -86,28 +86,28 @@ public class SalespersonListController implements Initializable, DataChangeListe
 
     private void createDialogForm(Salesperson salesperson, String path, Stage parentStage) {
 
-//        try {
-//
-//            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(path));
-//            Pane pane = fxmlLoader.load();
-//
-//            SalespersonFormController salespersonFormController = fxmlLoader.getController();
-//            salespersonFormController.setSalesperson(salesperson);
-//            salespersonFormController.setSalespersonService(new SalespersonService());
-//            salespersonFormController.subscribeDataChangeListener(this);
-//            salespersonFormController.updateFormData();
-//
-//            Stage dialogStage = new Stage();
-//            dialogStage.setTitle("Enter salesperson data");
-//            dialogStage.setScene(new Scene(pane));
-//            dialogStage.setResizable(false);
-//            dialogStage.initOwner(parentStage);
-//            dialogStage.initModality(Modality.WINDOW_MODAL);
-//            dialogStage.showAndWait();
-//        } catch (IOException e) {
-//
-//            Alerts.showAlert("IO Exception", "Error loading view.", e.getMessage(), Alert.AlertType.ERROR);
-//        }
+        try {
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(path));
+            Pane pane = fxmlLoader.load();
+
+            SalespersonFormController salespersonFormController = fxmlLoader.getController();
+            salespersonFormController.setSalesperson(salesperson);
+            salespersonFormController.setSalespersonService(new SalespersonService());
+            salespersonFormController.subscribeDataChangeListener(this);
+            salespersonFormController.updateFormData();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Enter salesperson data");
+            dialogStage.setScene(new Scene(pane));
+            dialogStage.setResizable(false);
+            dialogStage.initOwner(parentStage);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+
+            Alerts.showAlert("IO Exception", "Error loading view.", e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 
     private void removeEntity(Salesperson salesperson) {
