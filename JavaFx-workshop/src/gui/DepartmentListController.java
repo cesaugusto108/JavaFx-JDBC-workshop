@@ -1,8 +1,6 @@
 package gui;
 
 import application.Main;
-import db.DBException;
-import db.DBIntegrityException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
@@ -67,7 +65,10 @@ public class DepartmentListController implements Initializable, DataChangeListen
 
     public void updateTableView() {
 
-        if (departmentService == null) throw new IllegalStateException("Service is null");
+        if (departmentService == null) {
+
+            throw new IllegalStateException("Service is null");
+        }
 
         List<Department> list = departmentService.findAll();
         observableList = FXCollections.observableArrayList(list);
@@ -134,7 +135,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
     private void initEditButtons() {
 
         tableColumnEdit.setCellValueFactory(x -> new ReadOnlyObjectWrapper<>(x.getValue()));
-        tableColumnEdit.setCellFactory(x -> new TableCell<Department, Department>() {
+        tableColumnEdit.setCellFactory(x -> new TableCell<>() {
 
             private final Button BUTTON = new Button("Edit");
 
@@ -159,7 +160,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
     private void initRemoveButtons() {
 
         tableColumnRemove.setCellValueFactory(x -> new ReadOnlyObjectWrapper<>(x.getValue()));
-        tableColumnRemove.setCellFactory(x -> new TableCell<Department, Department>() {
+        tableColumnRemove.setCellFactory(x -> new TableCell<>() {
             private final Button BUTTON = new Button("Remove");
 
             @Override
