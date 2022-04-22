@@ -31,7 +31,7 @@ public class SalespersonDaoJDBC implements SalespersonDao {
 
             preparedStatement.setString(1, salesperson.getName());
             preparedStatement.setString(2, salesperson.getEmail());
-            preparedStatement.setDate(3, salesperson.getBirthDate());
+            preparedStatement.setDate(3, (Date) salesperson.getBirthDate());
             preparedStatement.setDouble(4, salesperson.getBaseSalary());
             preparedStatement.setInt(5, salesperson.getDepartmentId());
 
@@ -71,7 +71,7 @@ public class SalespersonDaoJDBC implements SalespersonDao {
 
             preparedStatement.setString(1, salesperson.getName());
             preparedStatement.setString(2, salesperson.getEmail());
-            preparedStatement.setDate(3, salesperson.getBirthDate());
+            preparedStatement.setDate(3, (Date) salesperson.getBirthDate());
             preparedStatement.setDouble(4, salesperson.getBaseSalary());
             preparedStatement.setInt(5, salesperson.getDepartment().getId());
             preparedStatement.setInt(6, salesperson.getId());
@@ -199,7 +199,7 @@ public class SalespersonDaoJDBC implements SalespersonDao {
         salesperson.setId(resultSet.getInt("Id"));
         salesperson.setName(resultSet.getString("Name"));
         salesperson.setEmail(resultSet.getString("Email"));
-        salesperson.setBirthDate(resultSet.getDate("BirthDate"));
+        salesperson.setBirthDate(new java.util.Date(resultSet.getTimestamp("BirthDate").getTime()));
         salesperson.setBaseSalary(resultSet.getDouble("BaseSalary"));
         salesperson.setDepartment(department);
 

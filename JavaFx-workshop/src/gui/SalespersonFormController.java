@@ -8,15 +8,14 @@ import gui.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import model.entities.Salesperson;
 import model.exceptions.ValidationException;
 import model.services.SalespersonService;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 public class SalespersonFormController implements Initializable {
@@ -44,7 +43,25 @@ public class SalespersonFormController implements Initializable {
     private TextField nameTextField;
 
     @FXML
-    private Label errorLabel;
+    private TextField emailTextField;
+
+    @FXML
+    private DatePicker birthDateDatePicker;
+
+    @FXML
+    private TextField baseSalaryTextField;
+
+    @FXML
+    private Label nameErrorLabel;
+
+    @FXML
+    private Label emailErrorLabel;
+
+    @FXML
+    private Label birthDateErrorLabel;
+
+    @FXML
+    private Label baseSalaryErrorLabel;
 
     @FXML
     private Button saveButton;
@@ -117,10 +134,22 @@ public class SalespersonFormController implements Initializable {
 
     public void updateFormData() {
 
-        if (salesperson == null) throw new IllegalStateException("Salesperson is null.");
+        if (salesperson == null) {
+
+            throw new IllegalStateException("Salesperson is null.");
+        };
 
         idTextField.setText(String.valueOf(salesperson.getId()));
         nameTextField.setText(salesperson.getName());
+        emailTextField.setText(salesperson.getEmail());
+
+        if (salesperson.getBirthDate() != null) {
+
+            birthDateDatePicker.setValue(LocalDate.ofInstant(salesperson.getBirthDate().toInstant(), ZoneId.systemDefault()));
+        }
+
+        Locale.setDefault(Locale.US);
+        baseSalaryTextField.setText(String.format("%.2f", salesperson.getBaseSalary()));
     }
 
     public void subscribeDataChangeListener(DataChangeListener dataChangeListener) {
@@ -134,14 +163,16 @@ public class SalespersonFormController implements Initializable {
 
         if (fields.contains("Name")) {
 
-            errorLabel.setText(errors.get("Name"));
+            nameErrorLabel.setText(errors.get("Name"));
         }
     }
 
     private void initializeNodes() {
 
         Constraints.setTextFieldInteger(idTextField);
-        Constraints.setTextFieldMaxLength(nameTextField, 30);
+        Constraints.setTextFieldMaxLength(nameTextField, 80);
+        Constraints.setTextFieldDouble(baseSalaryTextField);
+        Utils.formatDatePicker(birthDateDatePicker, "MM/dd/yyyy");
     }
 
     @Override
