@@ -5,12 +5,17 @@ import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.util.Callback;
+import model.entities.Department;
 import model.entities.Salesperson;
 import model.exceptions.ValidationException;
+import model.services.DepartmentService;
 import model.services.SalespersonService;
 
 import java.net.URL;
@@ -24,6 +29,8 @@ public class SalespersonFormController implements Initializable {
 
     private SalespersonService salespersonService;
 
+    private DepartmentService departmentService;
+
     private final List<DataChangeListener> DATA_CHANGE_LISTENERS = new ArrayList<>();
 
     public void setSalesperson(Salesperson salesperson) {
@@ -31,9 +38,10 @@ public class SalespersonFormController implements Initializable {
         this.salesperson = salesperson;
     }
 
-    public void setSalespersonService(SalespersonService salespersonService) {
+    public void setServices(SalespersonService salespersonService, DepartmentService departmentService) {
 
         this.salespersonService = salespersonService;
+        this.departmentService = departmentService;
     }
 
     @FXML
@@ -52,6 +60,9 @@ public class SalespersonFormController implements Initializable {
     private TextField baseSalaryTextField;
 
     @FXML
+    private ComboBox<Department> departmentComboBox;
+
+    @FXML
     private Label nameErrorLabel;
 
     @FXML
@@ -68,6 +79,8 @@ public class SalespersonFormController implements Initializable {
 
     @FXML
     private Button cancelButton;
+
+    private ObservableList<Department> observableList;
 
     @FXML
     public void setSaveButtonAction(ActionEvent event) {
@@ -150,6 +163,43 @@ public class SalespersonFormController implements Initializable {
 
         Locale.setDefault(Locale.US);
         baseSalaryTextField.setText(String.format("%.2f", salesperson.getBaseSalary()));
+
+        if (salesperson.getDepartment() == null) {
+
+            departmentComboBox.getSelectionModel().selectFirst();
+        } else {
+
+            departmentComboBox.setValue(salesperson.getDepartment());
+        }
+    }
+
+    public void loadAssociatedObjects() {
+
+        if (departmentService == null) {
+
+            throw new IllegalStateException("Department Service is null.");
+        }
+
+        List<Department> list = departmentService.findAll();
+        observableList = FXCollections.observableArrayList(list);
+        departmentComboBox.setItems(observableList);
+    }
+
+    private void initializeComboBoxDepartment() {
+
+        Callback<ListView<Department>, ListCell<Department>> factory = listView -> new ListCell<>() {
+
+            @Override
+            protected void updateItem(Department department, boolean empty) {
+
+                super.updateItem(department, empty);
+
+                setText(empty ? "" : department.getName());
+            }
+        };
+
+        departmentComboBox.setCellFactory(factory);
+        departmentComboBox.setButtonCell(factory.call(null));
     }
 
     public void subscribeDataChangeListener(DataChangeListener dataChangeListener) {
@@ -173,6 +223,7 @@ public class SalespersonFormController implements Initializable {
         Constraints.setTextFieldMaxLength(nameTextField, 80);
         Constraints.setTextFieldDouble(baseSalaryTextField);
         Utils.formatDatePicker(birthDateDatePicker, "MM/dd/yyyy");
+        initializeComboBoxDepartment();
     }
 
     @Override

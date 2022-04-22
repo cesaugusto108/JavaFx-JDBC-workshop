@@ -18,6 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Salesperson;
+import model.services.DepartmentService;
 import model.services.SalespersonService;
 
 import java.io.IOException;
@@ -93,7 +94,8 @@ public class SalespersonListController implements Initializable, DataChangeListe
 
             SalespersonFormController salespersonFormController = fxmlLoader.getController();
             salespersonFormController.setSalesperson(salesperson);
-            salespersonFormController.setSalespersonService(new SalespersonService());
+            salespersonFormController.setServices(new SalespersonService(), new DepartmentService());
+            salespersonFormController.loadAssociatedObjects();
             salespersonFormController.subscribeDataChangeListener(this);
             salespersonFormController.updateFormData();
 
@@ -106,6 +108,7 @@ public class SalespersonListController implements Initializable, DataChangeListe
             dialogStage.showAndWait();
         } catch (IOException e) {
 
+            e.printStackTrace();
             Alerts.showAlert("IO Exception", "Error loading view.", e.getMessage(), Alert.AlertType.ERROR);
         }
     }
