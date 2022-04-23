@@ -6,10 +6,8 @@ import model.entities.Department;
 import model.entities.Salesperson;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Date;
+import java.util.*;
 
 public class SalespersonDaoJDBC implements SalespersonDao {
 
@@ -25,15 +23,15 @@ public class SalespersonDaoJDBC implements SalespersonDao {
 
         try (PreparedStatement preparedStatement = CONNECTION
                 .prepareStatement("INSERT INTO salesperson " +
-                                "(Name, Email, BirthDate, BaseSalary, DepartmentId) " +
+                                "(Name, Email, Birthdate, BaseSalary, DepartmentId) " +
                                 "VALUES (?, ?, ?, ?, ?)",
                         Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setString(1, salesperson.getName());
             preparedStatement.setString(2, salesperson.getEmail());
-            preparedStatement.setDate(3, (Date) salesperson.getBirthDate());
+            preparedStatement.setDate(3, new java.sql.Date(salesperson.getBirthdate().getTime()));
             preparedStatement.setDouble(4, salesperson.getBaseSalary());
-            preparedStatement.setInt(5, salesperson.getDepartmentId());
+            preparedStatement.setInt(5, salesperson.getDepartment().getId());
 
             int rowsInserted = preparedStatement.executeUpdate();
 
@@ -65,13 +63,13 @@ public class SalespersonDaoJDBC implements SalespersonDao {
         try (PreparedStatement preparedStatement = CONNECTION
                 .prepareStatement("""
                                 UPDATE salesperson
-                                SET Name=?, Email=?, BirthDate=?, BaseSalary=?, DepartmentId=?
+                                SET Name=?, Email=?, Birthdate=?, BaseSalary=?, DepartmentId=?
                                 WHERE Id=?""",
                         Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setString(1, salesperson.getName());
             preparedStatement.setString(2, salesperson.getEmail());
-            preparedStatement.setDate(3, (Date) salesperson.getBirthDate());
+            preparedStatement.setDate(3, new java.sql.Date(salesperson.getBirthdate().getTime()));
             preparedStatement.setDouble(4, salesperson.getBaseSalary());
             preparedStatement.setInt(5, salesperson.getDepartment().getId());
             preparedStatement.setInt(6, salesperson.getId());
@@ -199,7 +197,7 @@ public class SalespersonDaoJDBC implements SalespersonDao {
         salesperson.setId(resultSet.getInt("Id"));
         salesperson.setName(resultSet.getString("Name"));
         salesperson.setEmail(resultSet.getString("Email"));
-        salesperson.setBirthDate(new java.util.Date(resultSet.getTimestamp("BirthDate").getTime()));
+        salesperson.setBirthdate(new java.util.Date(resultSet.getTimestamp("BirthDate", Calendar.getInstance(TimeZone.getDefault())).getTime()));
         salesperson.setBaseSalary(resultSet.getDouble("BaseSalary"));
         salesperson.setDepartment(department);
 

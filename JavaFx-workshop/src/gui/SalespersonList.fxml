@@ -29,7 +29,7 @@
                 <TableColumn fx:id="salespersonIdTableColumn" prefWidth="40.0" text="Id" />
                 <TableColumn fx:id="salespersonNameTableColumn" prefWidth="120.0" text="Name" />
             <TableColumn fx:id="salespersonEmailTableColumn" prefWidth="115.0" text="Email" />
-            <TableColumn fx:id="salespersonBirthDateTableColumn" prefWidth="90.0" text="Birth date" />
+            <TableColumn fx:id="salespersonBirthdateTableColumn" prefWidth="90.0" text="Birthdate" />
             <TableColumn fx:id="salespersonBaseSalaryTableColumn" prefWidth="95.0" text="Base salary" />
                 <TableColumn fx:id="tableColumnEdit" prefWidth="50.0" />
                 <TableColumn fx:id="tableColumnRemove" prefWidth="78.0" />

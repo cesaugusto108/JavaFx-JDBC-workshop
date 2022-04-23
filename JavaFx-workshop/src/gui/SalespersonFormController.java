@@ -19,6 +19,7 @@ import model.services.DepartmentService;
 import model.services.SalespersonService;
 
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -54,7 +55,7 @@ public class SalespersonFormController implements Initializable {
     private TextField emailTextField;
 
     @FXML
-    private DatePicker birthDateDatePicker;
+    private DatePicker BirthdateDatePicker;
 
     @FXML
     private TextField baseSalaryTextField;
@@ -69,7 +70,7 @@ public class SalespersonFormController implements Initializable {
     private Label emailErrorLabel;
 
     @FXML
-    private Label birthDateErrorLabel;
+    private Label birthdateErrorLabel;
 
     @FXML
     private Label baseSalaryErrorLabel;
@@ -124,12 +125,39 @@ public class SalespersonFormController implements Initializable {
 
         dep.setId(Utils.stringParseInt(idTextField.getText()));
 
+        // Name
         if (nameTextField.getText() == null || nameTextField.getText().trim().equals("")) {
 
             validationException.addError("Name", "Field must not be empty.");
         }
-
         dep.setName(nameTextField.getText());
+
+        // Email
+        if (emailTextField.getText() == null || emailTextField.getText().trim().equals("")) {
+
+            validationException.addError("Email", "Field must not be empty.");
+        }
+        dep.setEmail(emailTextField.getText());
+
+        //Birthdate
+        if (BirthdateDatePicker.getValue() == null) {
+
+            validationException.addError("Birthdate", "Field must not be empty.");
+        } else {
+
+            Instant instant = Instant.from(BirthdateDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()));
+            dep.setBirthdate(Date.from(instant));
+        }
+
+        // Base salary
+        if (baseSalaryTextField.getText() == null || baseSalaryTextField.getText().trim().equals("")) {
+
+            validationException.addError("Base salary", "Field must not be empty.");
+        }
+        dep.setBaseSalary(Utils.stringParseDouble(baseSalaryTextField.getText()));
+
+        // Department
+        dep.setDepartment(departmentComboBox.getValue());
 
         if (validationException.getERRORS().size() > 0) {
 
@@ -156,9 +184,9 @@ public class SalespersonFormController implements Initializable {
         nameTextField.setText(salesperson.getName());
         emailTextField.setText(salesperson.getEmail());
 
-        if (salesperson.getBirthDate() != null) {
+        if (salesperson.getBirthdate() != null) {
 
-            birthDateDatePicker.setValue(LocalDate.ofInstant(salesperson.getBirthDate().toInstant(), ZoneId.systemDefault()));
+            BirthdateDatePicker.setValue(LocalDate.ofInstant(salesperson.getBirthdate().toInstant(), ZoneId.systemDefault()));
         }
 
         Locale.setDefault(Locale.US);
@@ -211,10 +239,17 @@ public class SalespersonFormController implements Initializable {
 
         Set<String> fields = errors.keySet();
 
-        if (fields.contains("Name")) {
+        // Name
+        nameErrorLabel.setText(fields.contains("Name") ? errors.get("Name") : "");
 
-            nameErrorLabel.setText(errors.get("Name"));
-        }
+        // Email
+        emailErrorLabel.setText(fields.contains("Email") ? errors.get("Email") : "");
+
+        // Birthdate
+        birthdateErrorLabel.setText(fields.contains("Birthdate") ? errors.get("Birthdate") : "");
+
+        // Base salary
+        baseSalaryErrorLabel.setText(fields.contains("Base salary") ? errors.get("Base salary") : "");
     }
 
     private void initializeNodes() {
@@ -222,7 +257,7 @@ public class SalespersonFormController implements Initializable {
         Constraints.setTextFieldInteger(idTextField);
         Constraints.setTextFieldMaxLength(nameTextField, 80);
         Constraints.setTextFieldDouble(baseSalaryTextField);
-        Utils.formatDatePicker(birthDateDatePicker, "MM/dd/yyyy");
+        Utils.formatDatePicker(BirthdateDatePicker, "MM/dd/yyyy");
         initializeComboBoxDepartment();
     }
 

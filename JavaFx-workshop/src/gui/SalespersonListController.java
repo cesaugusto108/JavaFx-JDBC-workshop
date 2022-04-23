@@ -53,7 +53,7 @@ public class SalespersonListController implements Initializable, DataChangeListe
     private TableColumn<Salesperson, String> salespersonEmailTableColumn;
 
     @FXML
-    private TableColumn<Salesperson, Date> salespersonBirthDateTableColumn;
+    private TableColumn<Salesperson, Date> salespersonBirthdateTableColumn;
 
     @FXML
     private TableColumn<Salesperson, Double> salespersonBaseSalaryTableColumn;
@@ -196,8 +196,8 @@ public class SalespersonListController implements Initializable, DataChangeListe
         salespersonNameTableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         salespersonEmailTableColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        salespersonBirthDateTableColumn.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
-        Utils.formatTableColumnDate(salespersonBirthDateTableColumn, "MM/dd/yyyy");
+        salespersonBirthdateTableColumn.setCellValueFactory(new PropertyValueFactory<>("Birthdate"));
+        Utils.formatTableColumnDate(salespersonBirthdateTableColumn, "MM/dd/yyyy");
 
         salespersonBaseSalaryTableColumn.setCellValueFactory(new PropertyValueFactory<>("baseSalary"));
         Utils.formatTableColumnDouble(salespersonBaseSalaryTableColumn, 2);

@@ -9,11 +9,17 @@ public class Salesperson implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 2724058024214740941L;
+
     private Integer id;
+
     private String name;
+
     private String email;
-    private Date birthDate;
+
+    private Date birthdate;
+
     private Double baseSalary;
+
     private Integer departmentId;
 
     private Department department;
@@ -21,11 +27,11 @@ public class Salesperson implements Serializable {
     public Salesperson() {
     }
 
-    public Salesperson(Integer id, String name, String email, Date birthDate, Double baseSalary, Integer departmentId, Department department) {
+    public Salesperson(Integer id, String name, String email, Date birthdate, Double baseSalary, Integer departmentId, Department department) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.birthDate = birthDate;
+        this.birthdate = birthdate;
         this.baseSalary = baseSalary;
         this.departmentId = departmentId;
         this.department = department;
@@ -55,12 +61,12 @@ public class Salesperson implements Serializable {
         this.email = email;
     }
 
-    public Date getBirthDate() {
-        return birthDate;
+    public Date getBirthdate() {
+        return birthdate;
     }
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
     }
 
     public Double getBaseSalary() {
@@ -104,7 +110,7 @@ public class Salesperson implements Serializable {
         return "Salesperson id: " + id + ";\n"
                 + "Name: " + name + ";\n"
                 + "Email: " + email + ";\n"
-                + "Birth date: " + birthDate + ";\n"
+                + "Birthdate: " + birthdate + ";\n"
                 + "Base salary: " + baseSalary + ";\n"
                 + "Department: " + department;
     }

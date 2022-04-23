@@ -32,6 +32,17 @@ public class Utils {
         }
     }
 
+    public static Double stringParseDouble(String string) {
+
+        try {
+
+            return Double.parseDouble(string);
+        } catch (NumberFormatException e) {
+
+            return null;
+        }
+    }
+
     public static <T> void formatTableColumnDouble(TableColumn<T, Double> tableColumn, int decimalPlaces) {
 
         tableColumn.setCellFactory(x -> {
