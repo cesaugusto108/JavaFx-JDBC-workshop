@@ -81,8 +81,6 @@ public class SalespersonFormController implements Initializable {
     @FXML
     private Button cancelButton;
 
-    private ObservableList<Department> observableList;
-
     @FXML
     public void setSaveButtonAction(ActionEvent event) {
 
@@ -178,7 +176,7 @@ public class SalespersonFormController implements Initializable {
         if (salesperson == null) {
 
             throw new IllegalStateException("Salesperson is null.");
-        };
+        }
 
         idTextField.setText(String.valueOf(salesperson.getId()));
         nameTextField.setText(salesperson.getName());
@@ -209,7 +207,7 @@ public class SalespersonFormController implements Initializable {
         }
 
         List<Department> list = departmentService.findAll();
-        observableList = FXCollections.observableArrayList(list);
+        ObservableList<Department> observableList = FXCollections.observableArrayList(list);
         departmentComboBox.setItems(observableList);
     }
 

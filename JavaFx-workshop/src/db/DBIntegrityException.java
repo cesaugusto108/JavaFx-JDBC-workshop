@@ -8,6 +8,7 @@ public class DBIntegrityException extends RuntimeException {
     private static final long serialVersionUID = -2869253512476805453L;
 
     public DBIntegrityException(String message) {
+
         super(message);
     }
 }

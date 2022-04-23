@@ -53,8 +53,6 @@ public class DepartmentListController implements Initializable, DataChangeListen
     @FXML
     private TableColumn<Department, Department> tableColumnRemove;
 
-    private ObservableList<Department> observableList;
-
     @FXML
     public void setButtonNewAction(ActionEvent actionEvent) {
 
@@ -71,7 +69,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
         }
 
         List<Department> list = departmentService.findAll();
-        observableList = FXCollections.observableArrayList(list);
+        ObservableList<Department> observableList = FXCollections.observableArrayList(list);
         departmentTableView.setItems(observableList);
         initEditButtons();
         initRemoveButtons();

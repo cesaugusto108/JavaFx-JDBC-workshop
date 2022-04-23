@@ -6,7 +6,6 @@ import model.entities.Department;
 import model.entities.Salesperson;
 
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 public class SalespersonDaoJDBC implements SalespersonDao {

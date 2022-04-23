@@ -64,8 +64,6 @@ public class SalespersonListController implements Initializable, DataChangeListe
     @FXML
     private TableColumn<Salesperson, Salesperson> tableColumnRemove;
 
-    private ObservableList<Salesperson> observableList;
-
     @FXML
     public void setButtonNewAction(ActionEvent actionEvent) {
 
@@ -79,7 +77,7 @@ public class SalespersonListController implements Initializable, DataChangeListe
         if (salespersonService == null) throw new IllegalStateException("Service is null");
 
         List<Salesperson> list = salespersonService.findAll();
-        observableList = FXCollections.observableArrayList(list);
+        ObservableList<Salesperson> observableList = FXCollections.observableArrayList(list);
         salespersonTableView.setItems(observableList);
         initEditButtons();
         initRemoveButtons();
@@ -144,7 +142,7 @@ public class SalespersonListController implements Initializable, DataChangeListe
     private void initEditButtons() {
 
         tableColumnEdit.setCellValueFactory(x -> new ReadOnlyObjectWrapper<>(x.getValue()));
-        tableColumnEdit.setCellFactory(x -> new TableCell<Salesperson, Salesperson>() {
+        tableColumnEdit.setCellFactory(x -> new TableCell<>() {
 
             private final Button BUTTON = new Button("Edit");
 
@@ -169,7 +167,7 @@ public class SalespersonListController implements Initializable, DataChangeListe
     private void initRemoveButtons() {
 
         tableColumnRemove.setCellValueFactory(x -> new ReadOnlyObjectWrapper<>(x.getValue()));
-        tableColumnRemove.setCellFactory(x -> new TableCell<Salesperson, Salesperson>() {
+        tableColumnRemove.setCellFactory(x -> new TableCell<>() {
             private final Button BUTTON = new Button("Remove");
 
             @Override

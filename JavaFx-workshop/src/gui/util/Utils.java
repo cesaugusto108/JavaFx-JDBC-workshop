@@ -45,58 +45,52 @@ public class Utils {
 
     public static <T> void formatTableColumnDouble(TableColumn<T, Double> tableColumn, int decimalPlaces) {
 
-        tableColumn.setCellFactory(x -> {
+        tableColumn.setCellFactory(x -> new TableCell<>() {
 
-            return new TableCell<T, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
 
-                @Override
-                protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
 
-                    super.updateItem(item, empty);
+                if (empty) {
 
-                    if (empty) {
+                    setText(null);
+                } else {
 
-                        setText(null);
-                    } else {
-
-                        Locale.setDefault(Locale.US);
-                        setText(String.format("%." + decimalPlaces + "f", item));
-                    }
+                    Locale.setDefault(Locale.US);
+                    setText(String.format("%." + decimalPlaces + "f", item));
                 }
-            };
+            }
         });
     }
 
     public static <T> void formatTableColumnDate(TableColumn<T, Date> tableColumn, String format) {
 
-        tableColumn.setCellFactory(x -> {
+        tableColumn.setCellFactory(x -> new TableCell<>() {
 
-            return new TableCell<T, Date>() {
+            private final SimpleDateFormat SDF = new SimpleDateFormat(format);
 
-                private final SimpleDateFormat SDF = new SimpleDateFormat(format);
+            @Override
+            protected void updateItem(Date item, boolean empty) {
 
-                @Override
-                protected void updateItem(Date item, boolean empty) {
+                super.updateItem(item, empty);
 
-                    super.updateItem(item, empty);
+                if (empty) {
 
-                    if (empty) {
+                    setText(null);
+                } else {
 
-                        setText(null);
-                    } else {
-
-                        setText(SDF.format(item));
-                    }
+                    setText(SDF.format(item));
                 }
-            };
+            }
         });
     }
 
     public static void formatDatePicker(DatePicker datePicker, String format) {
 
-        datePicker.setConverter(new StringConverter<LocalDate>() {
+        datePicker.setConverter(new StringConverter<>() {
 
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
+            final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(format);
 
             {
                 datePicker.setPromptText(format.toLowerCase());
@@ -107,7 +101,7 @@ public class Utils {
 
                 if (localDate != null) {
 
-                    return dateTimeFormatter.format(localDate);
+                    return DATE_TIME_FORMATTER.format(localDate);
                 } else {
 
                     return null;
@@ -119,7 +113,7 @@ public class Utils {
 
                 if (s != null && !s.isEmpty()) {
 
-                    return LocalDate.parse(s, dateTimeFormatter);
+                    return LocalDate.parse(s, DATE_TIME_FORMATTER);
                 } else {
 
                     return null;

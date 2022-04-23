@@ -150,7 +150,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
                 Department dep = departmentMap.get(resultSet.getInt("Id"));
                 if (dep == null) {
 
-                    departmentMap.put(resultSet.getInt("Id"), dep);
+                    departmentMap.put(resultSet.getInt("Id"), null);
                     dep = new Department(resultSet.getInt(1), resultSet.getString(2));
                 }
 
